@@ -1,5 +1,6 @@
-import struct
 from mathcou import *
+from numpy import arccos, arctan2,pi
+import struct
 
 class Texture(object):
     def __init__(self, filename):
@@ -30,39 +31,31 @@ class Texture(object):
         
                 
     def getColor(self, u, v):
-        if 0<=u<1 and 0<=v<1:
-            x =int(v*(self.width-1))
-            y = int(u*(self.height-1))
-            #print("GET COLOR DEVUELVE:")
-            #print(x)
-            #print(y)
-            #print(self.pixels[y][x])
-            # print(self)
-            if 0<=x<len(self.pixels[0]) and 0<=y<len(self.pixels):
-                return self.pixels[y][x]
-            else:
-                print("ERROR: SE TRATO DE RETORNAR EL PIXEL DE TEXTURA: \n")
-                print(" X : " + str(x)+" ; Y: "+ str(y))
-                return None
-                
         
-        else :
-            return None
+        ##tendra un comportamineto de tilling por defecto
+        u = u%1
+        v= v%1
+        # print(" U " + str(u) + "V " + str(v))
+    
+        x =int(v*(self.width-1))
+        y = int(u*(self.height-1))
+                      
+        return self.pixels[y][x]
+      
             
             
-    #este metodo deberia retornar los colores basados en las coordinadas uv del triangulo y basado en su uvw
-    def getColor2(self,Vertex1x,Vertex1y,Vertex2x,Vertex2y,Vertex3x,Vertex3y,u,v,w) :             
+    #este metodo deberia retornar los colores basados la direccion desde el centro de la esfera
+    def getColorSphere(self, direction):
+        
+        direction = normalize(direction)
+
+        
+        v = arctan2(direction[2],direction[0]) / (2*np.pi)
+        u = arccos(-direction[1]) / np.pi
         
         
-        myx= 1
-        myy=1
-        
-        pass
-    
-    def getWidth(self):
-        return self.width
-    
-    def getHeight(self):
-        return self.height
-        
+        x =int(v*(self.width-1))
+        y = int(u*(self.height-1))
+                       
+        return self.pixels[y][x]
         
