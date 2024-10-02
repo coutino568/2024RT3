@@ -2,7 +2,7 @@
 import pygame
 import random
 from gl import Raytracer
-from shapes import Sphere , Plane, Disk
+from shapes import Sphere , Plane, Disk , AABB
 from lights import *
 from materials import *
 
@@ -17,11 +17,12 @@ screen = pygame.display.set_mode((width, height))
 clock = pygame.time.Clock()
 running = True
 
-envMapFile = "env1.bmp"
+envMapFile = "env3.bmp"
 metalTexture="metal.bmp"
 waveTexture="env3.bmp"
 snowTextureFile="snow.bmp"
 clayTextureFile = "clay.bmp"
+brickTextureFile = "bricks.bmp"
 # pixels= [[self.bgColor for x in range(self.width)] for y in range(self.height)]
 
 myRaytracer =  Raytracer(screen,envMapFile)
@@ -31,7 +32,7 @@ DIFUSE =0
 REFLECTIVE = 1
 TRANSPARENT = 2
 
-brick = Material(difuse = (0.5,0.1,0),specular=0.2,type=DIFUSE)
+brick = Material(difuse = (0.5,0.1,0),specular=0.2,type=DIFUSE ,texture= brickTextureFile)
 snow= Material(difuse=(1,1,1),specular=0.99,type=DIFUSE , texture=snowTextureFile)
 water= Material(difuse=(1,1,1),specular=0.99,type=DIFUSE , texture=waveTexture)
 black= Material(difuse=(0.1,0.1,0.1),specular=0.5,type=DIFUSE)
@@ -46,17 +47,17 @@ clay= Material(difuse=(1,1,1),specular=0.99,type=DIFUSE , texture=clayTextureFil
 
 materials= [brick,snow,black,carrot, mirror]
 
-myRaytracer.objects.append( Sphere(position=(0,-2,-7), radius =1.5, material = snow))
+# myRaytracer.objects.append( Sphere(position=(2,-2,-7), radius =1.5, material = snow))
 # myRaytracer.objects.append( Sphere(position=(-2,0,-5), radius =1.5, material = metal))
-myRaytracer.objects.append( Sphere(position=(2,0,-5), radius =1, material = mirror))
+# # # myRaytracer.objects.append( Sphere(position=(2,0,-5), radius =1, material = mirror))
 
-# myRaytracer.objects.append( Plane(position=(-5,0,-50),normal=(1,0,0), material= mirror))
-# myRaytracer.objects.append( Plane(position=(0,-10,-0),normal=(0,1,0), material= brick))
+myRaytracer.objects.append( Plane(position=(-5,0,-50),normal=(1,0,0), material= snow))
+# myRaytracer.objects.append( Plane(position=(0,-10,-0),normal=(0,1,0), material= snow))
 
-# myRaytracer.objects.append( Disk(position=(-5,0,-50),material= mirror , normal=(1,0,0) ,radius=5))
-myRaytracer.objects.append( Sphere(position=(0,0,-10), radius =5 ,material = mirror))
-
-myRaytracer.objects.append( Sphere(position=(-7,-3, -2), radius =1.5, material = clay))
+myRaytracer.objects.append( Disk(position=(1,-5,-10), normal = (0,1,0) , material= brick  ,radius=8))
+# myRaytracer.objects.append( Sphere(position=(0,0,-10), radius =5 ,material = mirror))
+# # myRaytracer.objects.append( AABB(position=(0,0,0), size =[2,2,2] ,material = mirror))
+# myRaytracer.objects.append( Sphere(position=(-7,-3, -2), radius =1.5, material = clay))
 
 
 # numofspheres = 10
@@ -79,9 +80,9 @@ myRaytracer.objects.append( Sphere(position=(-7,-3, -2), radius =1.5, material =
 # myRaytracer.objects.append( Sphere(position=(3,0,-5), radius =1.5, material = brick))
 
 
-myRaytracer.Lights.append( AmbientLight(intensity = 0.1))
+# myRaytracer.Lights.append( AmbientLight(intensity = 0.1))
 # myRaytracer.Lights.append (DirectionalLight(direction=(-0.9,-1,-2),intensity=0.4))
-myRaytracer.Lights.append (DirectionalLight(direction=(-0.9,-1,-2),intensity=0.4))
+myRaytracer.Lights.append (DirectionalLight(direction=(-0.2,-1,-0.5),intensity=0.4))
 
 
 myRaytracer.rtClear()
